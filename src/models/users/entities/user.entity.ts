@@ -1,6 +1,14 @@
 import { BookingTable } from 'src/models/booking-tables/entities/booking-table.entity';
 import { Order } from 'src/models/orders/entities/order.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import * as bcrypt from 'bcrypt';
 
 @Entity('user')
 export class User {
@@ -29,8 +37,13 @@ export class User {
   flag: boolean;
 
   @OneToMany(() => BookingTable, (booking) => booking.user)
-  bookings: BookingTable[];
+  bookings?: BookingTable[];
 
   @OneToMany(() => Order, (order) => order.user)
-  orders: Order[];
+  orders?: Order[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.passwordHash = await bcrypt.hashSync(this.passwordHash, 10);
+  }
 }

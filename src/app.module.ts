@@ -11,6 +11,7 @@ import { MenusModule } from './models/menus/menus.module';
 import { MenuItemModule } from './models/menu-item/menu-item.module';
 import { OrdersModule } from './models/orders/orders.module';
 import { OrderItemModule } from './models/order-item/order-item.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { OrderItemModule } from './models/order-item/order-item.module';
     MenuItemModule,
     OrdersModule,
     OrderItemModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
