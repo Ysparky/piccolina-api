@@ -1,5 +1,5 @@
-import { Ingredient } from 'src/ingredients/entities/ingredient.entity';
-import { Item } from 'src/items/entities/item.entity';
+import { Ingredient } from 'src/models/ingredients/entities/ingredient.entity';
+import { Item } from 'src/models/items/entities/item.entity';
 import {
   Column,
   Entity,

@@ -1,6 +1,6 @@
-import { MenuItem } from 'src/menu-item/entities/menu-item.entity';
-import { OrderItem } from 'src/order-item/entities/order-item.entity';
-import { Recipe } from 'src/recipes/entities/recipe.entity';
+import { MenuItem } from 'src/models/menu-item/entities/menu-item.entity';
+import { OrderItem } from 'src/models/order-item/entities/order-item.entity';
+import { Recipe } from 'src/models/recipes/entities/recipe.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('item')

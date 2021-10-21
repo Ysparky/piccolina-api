@@ -1,5 +1,5 @@
-import { Table } from 'src/tables/entities/table.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Table } from 'src/models/tables/entities/table.entity';
+import { User } from 'src/models/users/entities/user.entity';
 import {
   Column,
   Entity,

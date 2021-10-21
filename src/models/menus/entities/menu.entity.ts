@@ -1,8 +1,8 @@
-import { Recipe } from 'src/recipes/entities/recipe.entity';
+import { MenuItem } from 'src/models/menu-item/entities/menu-item.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('ingredient')
-export class Ingredient {
+@Entity('menu')
+export class Menu {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,13 +13,7 @@ export class Ingredient {
   name: string;
 
   @Column()
-  summary: string;
-
-  @Column()
-  quantity: number;
-
-  @Column()
-  unit: string;
+  description: string;
 
   @Column()
   type: string;
@@ -27,6 +21,6 @@ export class Ingredient {
   @Column({ default: true })
   flag: boolean;
 
-  @OneToMany(() => Recipe, (recipe) => recipe.ingredient)
-  recipe: Recipe[];
+  @OneToMany(() => MenuItem, (menuItem) => menuItem.menu)
+  menuItem: MenuItem[];
 }

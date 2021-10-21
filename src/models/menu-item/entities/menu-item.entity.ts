@@ -1,5 +1,5 @@
-import { Item } from 'src/items/entities/item.entity';
-import { Menu } from 'src/menus/entities/menu.entity';
+import { Item } from 'src/models/items/entities/item.entity';
+import { Menu } from 'src/models/menus/entities/menu.entity';
 import {
   Column,
   Entity,

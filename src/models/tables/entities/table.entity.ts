@@ -1,4 +1,4 @@
-import { BookingTable } from 'src/booking-tables/entities/booking-table.entity';
+import { BookingTable } from 'src/models/booking-tables/entities/booking-table.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum TableStatus {

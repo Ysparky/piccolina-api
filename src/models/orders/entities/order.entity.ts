@@ -1,5 +1,5 @@
-import { OrderItem } from 'src/order-item/entities/order-item.entity';
-import { User } from 'src/users/entities/user.entity';
+import { OrderItem } from 'src/models/order-item/entities/order-item.entity';
+import { User } from 'src/models/users/entities/user.entity';
 import {
   Column,
   Entity,

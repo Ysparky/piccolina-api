@@ -1,5 +1,5 @@
-import { BookingTable } from 'src/booking-tables/entities/booking-table.entity';
-import { Order } from 'src/orders/entities/order.entity';
+import { BookingTable } from 'src/models/booking-tables/entities/booking-table.entity';
+import { Order } from 'src/models/orders/entities/order.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
