@@ -1,36 +1,29 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module';
-import { UsersModule } from './models/users/users.module';
-import { TablesModule } from './models/tables/tables.module';
-import { BookingTablesModule } from './models/booking-tables/booking-tables.module';
-import { IngredientsModule } from './models/ingredients/ingredients.module';
-import { ItemsModule } from './models/items/items.module';
-import { RecipesModule } from './models/recipes/recipes.module';
-import { MenusModule } from './models/menus/menus.module';
-import { MenuItemModule } from './models/menu-item/menu-item.module';
-import { OrdersModule } from './models/orders/orders.module';
-import { OrderItemModule } from './models/order-item/order-item.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { CacheService } from './config/cache/index';
+import { TypeOrmConfigService } from './config/database';
+import { GqlConfigService } from './config/graphql';
+import { DateScalar } from './config/graphql/scalars/data.scalar';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      isGlobal: true,
+    ConfigModule.forRoot({ isGlobal: true }),
+    CacheModule.registerAsync({
+      useClass: CacheService,
     }),
-    DatabaseModule,
-    UsersModule,
-    TablesModule,
-    BookingTablesModule,
-    IngredientsModule,
-    ItemsModule,
-    RecipesModule,
-    MenusModule,
-    MenuItemModule,
-    OrdersModule,
-    OrderItemModule,
+    GraphQLModule.forRootAsync({
+      useClass: GqlConfigService,
+    }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+    }),
+    UserModule,
     AuthModule,
   ],
+  providers: [DateScalar],
 })
 export class AppModule {}

@@ -1,28 +1,25 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from 'src/models/users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ACCESS_TOKEN_SECRET } from 'src/constants';
+import { UserModule } from '../users/user.module';
+import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { AuthController } from './auth.controller';
+import { RefreshToken } from './entities/refresh-token.entity';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
-    UsersModule,
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-      property: 'user',
-      session: false,
-    }),
+    TypeOrmModule.forFeature([RefreshToken]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: `${process.env.SECRETKEY}`,
-      signOptions: {
-        expiresIn: '5d',
-      },
+      secret: ACCESS_TOKEN_SECRET,
+      signOptions: { expiresIn: '3600s' },
     }),
+    UserModule,
   ],
-  providers: [AuthService, JwtStrategy],
-  controllers: [AuthController],
-  exports: [PassportModule, JwtModule],
+  providers: [AuthResolver, AuthService, JwtStrategy, LocalStrategy],
 })
 export class AuthModule {}

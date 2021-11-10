@@ -1,0 +1,67 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Date custom scalar type"""
+scalar Date
+
+input LoginUserDTO {
+  email: String!
+  password: String!
+}
+
+type LoginUserPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type Mutation {
+  login(data: LoginUserDTO!): LoginUserPayload!
+  refreshToken(input: RefreshTokenDTO!): RefreshTokenPayload!
+  register(data: RegisterUserDTO!): RegisterUserPayload!
+}
+
+type Query {
+  me: User!
+  user(id: Int!): User!
+  users: [User!]!
+}
+
+type RefreshToken {
+  createdAt: Boolean!
+  expires: Boolean!
+  id: Int!
+  revoked: Boolean!
+  updatedAt: Boolean!
+  user: User!
+}
+
+input RefreshTokenDTO {
+  refreshToken: String!
+}
+
+type RefreshTokenPayload {
+  accessToken: String!
+  user: User!
+}
+
+input RegisterUserDTO {
+  email: String!
+  password: String!
+}
+
+type RegisterUserPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type User {
+  createdAt: Date!
+  email: String!
+  id: Int!
+  password: String!
+  refreshTokens: [RefreshToken!]!
+  updatedAt: Date!
+}

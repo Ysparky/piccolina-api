@@ -1,76 +1,110 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UsersService } from 'src/models/users/users.service';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
-import { User } from 'src/models/users/entities/user.entity';
-
-import { JwtPayload } from './interfaces/payload.interface';
-import { LoginStatus } from './interfaces/login-status.interface';
-import { RegistrationStatus } from './interfaces/registration-status.interface';
-import { CreateUserDto } from 'src/models/users/dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TokenExpiredError } from 'jsonwebtoken';
+import { User } from 'src/users/user.entity';
+import { UserService } from 'src/users/user.service';
+import { comparePassword } from 'src/utils/password';
+import { Repository } from 'typeorm';
+import { LoginUserDTO } from './dto/login-user.dto';
+import { RegisterUserDTO } from './dto/register-user.dto';
+import { RefreshToken } from './entities/refresh-token.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    @InjectRepository(RefreshToken)
+    private refreshTokenRepository: Repository<RefreshToken>,
   ) {}
 
-  async validateUser(payload: JwtPayload): Promise<Partial<User>> {
-    const user = await this.usersService.findOne(payload.email);
-    console.log('user', user);
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+  async validateUser({ email, password }: LoginUserDTO) {
+    const user = await this.userService.getUserByEmail(email);
+
+    if (!user || (await comparePassword(password, user.password))) {
+      return null;
     }
 
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      lastName: user.lastName,
-    };
+    return user;
   }
 
-  async register(userDto: CreateUserDto): Promise<RegistrationStatus> {
-    let status: RegistrationStatus = {
-      success: true,
-      message: 'user registered',
-    };
-
-    try {
-      await this.usersService.create(userDto);
-    } catch (err) {
-      status = {
-        success: false,
-        message: err,
-      };
-    }
-
-    return status;
+  async generateAccessToken(user: User) {
+    const payload = { email: user.email, sub: String(user.id) };
+    return await this.jwtService.signAsync(payload);
   }
 
-  async login(loginUserDTO): Promise<LoginStatus> {
-    const user = await this.usersService.findByLogin(loginUserDTO);
-    const token = this._createToken(user);
-    return {
-      userId: user.id,
-      ...token,
-    };
+  async createRefreshToken(user: User, ttl: number) {
+    const expiration = new Date();
+    expiration.setTime(expiration.getTime() + ttl);
+
+    const token = await this.refreshTokenRepository.create({
+      user,
+      expires: expiration,
+    });
+
+    return await this.refreshTokenRepository.save(token);
   }
 
-  private _createToken({ id, name, lastName, email }: User) {
-    const expiresIn = process.env.EXPIRESIN;
-    const payload: JwtPayload = {
-      id,
-      email,
-      name,
-      lastName,
-    };
-    const accessToken = this.jwtService.sign(payload);
-
-    return {
+  async generateRefreshToken(user: User, expiresIn: number) {
+    const payload = { email: user.email, sub: String(user.id) };
+    const token = await this.createRefreshToken(user, expiresIn);
+    return await this.jwtService.signAsync({
+      ...payload,
       expiresIn,
-      accessToken,
-    };
+      jwtId: String(token.id),
+    });
+  }
+
+  async resolveRefreshToken(encoded: string) {
+    try {
+      const payload = await this.jwtService.verify(encoded);
+
+      if (!payload.sub || !payload.jwtId) {
+        throw new UnprocessableEntityException('Refresh token malformed');
+      }
+
+      const token = await this.refreshTokenRepository.findOne({
+        id: payload.jwtId,
+      });
+
+      if (!token) {
+        throw new UnprocessableEntityException('Refresh token not found');
+      }
+
+      if (token.revoked) {
+        throw new UnprocessableEntityException('Refresh token revoked');
+      }
+
+      const user = await this.userService.findOne(payload.subject);
+
+      if (!user) {
+        throw new UnprocessableEntityException('Refresh token malformed');
+      }
+
+      return { user, token };
+    } catch (e) {
+      if (e instanceof TokenExpiredError) {
+        throw new UnprocessableEntityException('Refresh token expired');
+      } else {
+        throw new UnprocessableEntityException('Refresh token malformed');
+      }
+    }
+  }
+
+  async createAccessTokenFromRefreshToken(refresh: string) {
+    const { user } = await this.resolveRefreshToken(refresh);
+
+    const token = await this.generateAccessToken(user);
+
+    return { user, token };
+  }
+
+  async register({ email, password: pass }: RegisterUserDTO) {
+    let user = await this.userService.getUserByEmail(email);
+    if (user) {
+      return null;
+    }
+    return this.userService.create(email, pass);
   }
 }
