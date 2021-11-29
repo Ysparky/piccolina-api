@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { FilterProductsDTO } from './products.dto';
 import { ProductsService } from './products.service';
 
@@ -9,5 +9,10 @@ export class ProductsController {
   @Get()
   getProductsByCategory(@Query() params: FilterProductsDTO) {
     return this.productsService.findAll(params);
+  }
+
+  @Get(':productId')
+  getProductById(@Param('productId', ParseIntPipe) id: number) {
+    return this.productsService.findOne(id);
   }
 }

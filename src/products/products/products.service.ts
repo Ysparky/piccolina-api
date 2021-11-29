@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FilterProductsDTO } from './products.dto';
@@ -25,5 +25,18 @@ export class ProductsService {
       where: { flag: true, category },
       relations: ['ingredients'],
     });
+  }
+
+  async findOne(id: number) {
+    const product = await this.productRepo.findOne({
+      where: { flag: true, id },
+      relations: [],
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Producto no encontrado`);
+    }
+
+    return product;
   }
 }
