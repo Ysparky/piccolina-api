@@ -16,6 +16,9 @@ export class Ingredient {
   @Column({ type: String, length: '255', unique: true })
   name: string;
 
+  @Column({ type: 'numeric', precision: 10, scale: 2 })
+  price: number;
+
   @Column({ default: true, type: Boolean })
   flag: boolean;
 
