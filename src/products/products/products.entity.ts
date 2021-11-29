@@ -30,6 +30,9 @@ export class Product {
   @Column({ type: 'varchar', name: 'image_url' })
   imageUrl: string;
 
+  @Column({ type: 'varchar', name: 'cooking_time' })
+  cookingTime: String;
+
   @Column({ type: 'boolean', default: true })
   flag: boolean;
 
@@ -60,4 +63,6 @@ export class Product {
     inverseJoinColumn: { name: 'ingredient_id' },
   })
   ingredients: Ingredient[];
+
+  //TODO: Reviews
 }
