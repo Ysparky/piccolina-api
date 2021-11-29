@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -22,6 +23,7 @@ export class Ingredient {
   @Column({ default: true, type: Boolean })
   flag: boolean;
 
+  @Exclude()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -29,6 +31,7 @@ export class Ingredient {
   })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',

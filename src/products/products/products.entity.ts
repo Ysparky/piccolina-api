@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -32,6 +33,7 @@ export class Product {
   @Column({ type: 'boolean', default: true })
   flag: boolean;
 
+  @Exclude()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
@@ -39,6 +41,7 @@ export class Product {
   })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamptz',
