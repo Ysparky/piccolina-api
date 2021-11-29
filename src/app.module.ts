@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import config from './constants';
 import { DatabaseModule } from './database/database.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { DatabaseModule } from './database/database.module';
       isGlobal: true,
     }),
     DatabaseModule,
+    ProductsModule,
   ],
 })
 export class AppModule {}
