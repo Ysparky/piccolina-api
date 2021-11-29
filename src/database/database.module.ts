@@ -3,6 +3,7 @@ import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import config from '../constants';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Global()
 @Module({
@@ -21,6 +22,7 @@ import config from '../constants';
           database,
           synchronize: false,
           autoLoadEntities: true,
+          namingStrategy: new SnakeNamingStrategy(),
         };
       },
     }),
