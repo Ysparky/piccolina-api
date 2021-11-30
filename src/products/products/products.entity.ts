@@ -7,11 +7,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from '../categories/categories.entity';
 import { Ingredient } from '../ingredients/ingredients.entity';
+import { Favorite } from '../../users/favorites/favorites.entity';
 
 @Entity('products')
 export class Product {
@@ -63,6 +65,9 @@ export class Product {
     inverseJoinColumn: { name: 'ingredient_id' },
   })
   ingredients: Ingredient[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.product)
+  customersFavorite: Favorite[];
 
   //TODO: Reviews
 }

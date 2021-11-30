@@ -1,15 +1,19 @@
 import { Exclude } from 'class-transformer';
+import { Product } from 'src/products/products/products.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Card } from '../cards/cards.entity';
+import { Favorite } from '../favorites/favorites.entity';
 import { Location } from '../locations/locations.entity';
 import { User } from '../users/users.entity';
 
@@ -55,4 +59,7 @@ export class Customer {
 
   @OneToMany(() => Location, (location) => location.customer)
   locations: Location[];
+
+  @OneToMany(() => Favorite, (favorite) => favorite.customer)
+  favorites: Favorite[];
 }
