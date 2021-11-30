@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Product } from 'src/products/products/products.entity';
+import { Review } from 'src/products/reviews/reviews.entity';
 import {
   Column,
   CreateDateColumn,
@@ -62,4 +63,7 @@ export class Customer {
 
   @OneToMany(() => Favorite, (favorite) => favorite.customer)
   favorites: Favorite[];
+
+  @OneToMany(() => Review, (review) => review.customer)
+  reviews: Review[];
 }

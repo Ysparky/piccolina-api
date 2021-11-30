@@ -14,6 +14,7 @@ import {
 import { Category } from '../categories/categories.entity';
 import { Ingredient } from '../ingredients/ingredients.entity';
 import { Favorite } from '../../users/favorites/favorites.entity';
+import { Review } from '../reviews/reviews.entity';
 
 @Entity('products')
 export class Product {
@@ -33,7 +34,10 @@ export class Product {
   imageUrl: string;
 
   @Column({ type: 'varchar', name: 'cooking_time' })
-  cookingTime: String;
+  cookingTime: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  rating: number;
 
   @Column({ type: 'boolean', default: true })
   flag: boolean;
@@ -69,5 +73,6 @@ export class Product {
   @OneToMany(() => Favorite, (favorite) => favorite.product)
   customersFavorite: Favorite[];
 
-  //TODO: Reviews
+  @OneToMany(() => Review, (review) => review.product)
+  reviews: Review[];
 }
