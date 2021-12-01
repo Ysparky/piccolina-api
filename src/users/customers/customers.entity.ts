@@ -26,10 +26,10 @@ export class Customer {
   @Column({ type: 'varchar', length: 255, name: 'full_name' })
   fullName: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   phone: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'image_url' })
   imageUrl: string;
 
   @OneToOne(() => User, (user) => user.customer)
