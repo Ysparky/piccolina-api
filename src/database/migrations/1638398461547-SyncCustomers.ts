@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class CustomersColumnsFix1638323727870 implements MigrationInterface {
-    name = 'CustomersColumnsFix1638323727870'
+export class SyncCustomers1638398461547 implements MigrationInterface {
+    name = 'SyncCustomers1638398461547'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "customers" DROP COLUMN "imageUrl"`);

@@ -22,14 +22,24 @@ export class CustomersService {
     email,
     password,
   }: CreateCustomerDTO): Promise<Customer> {
-    const user = await this.usersService.create({ email, password });
+    const createdUser = await this.usersService.create({ email, password });
 
-    const created = this.customersRepo.create({
+    const createdCustomer = this.customersRepo.create({
       fullName,
-      user: { id: user.id },
+      user: { id: createdUser.id },
+      imageUrl: `https://picsum.photos/200/300?random=${this.getRandomInt(
+        1,
+        200,
+      )}`,
     });
 
-    const { id } = await this.customersRepo.save(created);
+    const { id } = await this.customersRepo.save(createdCustomer);
     return this.findOne(id);
+  }
+
+  getRandomInt(min, max): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

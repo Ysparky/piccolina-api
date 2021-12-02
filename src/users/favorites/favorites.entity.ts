@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-import { Product } from 'src/products/products/products.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Product } from '../../products/products/products.entity';
 import { Customer } from '../customers/customers.entity';
 
 @Entity('favorites')

@@ -24,13 +24,13 @@ export class Worker {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'last_name' })
   lastName: string;
 
   @Column({ type: 'enum', enum: WorkerRole, default: WorkerRole.DELIVERY_MAN })
   role: WorkerRole;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'image_url' })
   imageUrl: string;
 
   @Column({ type: 'varchar', length: 255 })

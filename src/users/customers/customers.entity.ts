@@ -1,18 +1,15 @@
 import { Exclude } from 'class-transformer';
-import { Product } from 'src/products/products/products.entity';
-import { Review } from 'src/products/reviews/reviews.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Review } from '../../products/reviews/reviews.entity';
 import { Card } from '../cards/cards.entity';
 import { Favorite } from '../favorites/favorites.entity';
 import { Location } from '../locations/locations.entity';

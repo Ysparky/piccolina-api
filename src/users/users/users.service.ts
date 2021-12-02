@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDTO } from './users.dto';
 import { User } from './users.entity';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,12 +17,29 @@ export class UsersService {
   }
 
   findByEmail(email: string): Promise<User> {
-    return this.usersRepo.findOne({ where: { flag: true, email } });
+    return this.usersRepo.findOne({
+      where: { flag: true, email },
+      relations: ['customer', 'worker'],
+      loadEagerRelations: true,
+    });
   }
 
   async create({ email, password }: CreateUserDTO): Promise<User> {
-    const created = this.usersRepo.create({ email, password });
+    const user = await this.findByEmail(email);
+
+    if (user) {
+      throw new BadRequestException(`El correo ingresado ya está en uso`);
+    }
+
+    const created = this.usersRepo.create({
+      email,
+      password: this.hashPassword(password),
+    });
     const { id } = await this.usersRepo.save(created);
     return this.findOne(id);
+  }
+
+  private hashPassword(password): string {
+    return bcrypt.hashSync(password, 10);
   }
 }
