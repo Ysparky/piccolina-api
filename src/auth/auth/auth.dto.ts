@@ -25,13 +25,13 @@ export enum UserRole {
   WORKER = 'WORKER',
 }
 
-export class TokenPayload {
+export interface TokenPayload {
   id: number;
   role: UserRole;
   subId: number;
 }
 
-export class LogInResponse {
+export interface LogInResponse {
   id: number;
   fullName: string;
   phone: string;

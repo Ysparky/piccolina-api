@@ -4,10 +4,14 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
-import { LogInDTO, LogInResponse, SignUpCustomerDTO } from './auth.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request, Response } from 'express';
+import { User } from 'src/users/users/users.entity';
+import { LogInResponse, SignUpCustomerDTO } from './auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -22,9 +26,11 @@ export class AuthController {
       : res.status(HttpStatus.BAD_REQUEST).send();
   }
 
+  @UseGuards(AuthGuard('local'))
   @Post('signin')
   @HttpCode(200)
-  async signIn(@Body() input: LogInDTO): Promise<LogInResponse> {
-    return this.authService.logIn(input);
+  async signIn(@Req() req: Request): Promise<LogInResponse> {
+    const user = req.user as User;
+    return this.authService.generateToken(user);
   }
 }

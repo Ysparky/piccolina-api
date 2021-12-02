@@ -21,6 +21,33 @@ export class AuthService {
     private readonly customersService: CustomersService,
   ) {}
 
+  async validateUser({ email, password }: LogInDTO): Promise<User> {
+    console.log(email, password);
+    const user = await this.usersService.findByEmail(email);
+    if (user) {
+      const isValid = await bcrypt.compare(password, user.password);
+      if (isValid) {
+        return user;
+      }
+    }
+
+    return null;
+  }
+
+  generateToken(user: User): LogInResponse {
+    const payload = this.generatePayload(user);
+    const token = this.jwtService.sign(payload);
+
+    return {
+      id: user.id,
+      email: user.email,
+      fullName: user.customer.fullName,
+      imageUrl: user.customer.imageUrl,
+      phone: user.customer.phone,
+      token,
+    };
+  }
+
   async logIn({ email, password }: LogInDTO): Promise<LogInResponse> {
     const user = await this.usersService.findByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.password))) {
