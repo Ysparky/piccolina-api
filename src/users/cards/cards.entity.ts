@@ -5,7 +5,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,10 +21,10 @@ export class Card {
   @Column({ type: 'varchar', length: 255, name: 'card_holder' })
   cardHolder: string;
 
-  @Column({ type: 'int2' })
+  @Column({ type: 'int2', name: 'expiration_month' })
   expirationMonth: number;
 
-  @Column({ type: 'int2' })
+  @Column({ type: 'int2', name: 'expiration_year' })
   expirationYear: number;
 
   @ManyToOne(() => Customer, (customer) => customer.cards)

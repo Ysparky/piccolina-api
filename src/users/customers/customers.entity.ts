@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { Order } from 'src/orders/orders/orders.entity';
 import {
   Column,
   CreateDateColumn,
@@ -63,4 +64,7 @@ export class Customer {
 
   @OneToMany(() => Review, (review) => review.customer)
   reviews: Review[];
+
+  @OneToMany(() => Order, (order) => order.customer)
+  orders: Order[];
 }
