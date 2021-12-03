@@ -1,4 +1,5 @@
 import { ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 import { User } from '../..//users/users/users.entity';
 
@@ -13,9 +14,11 @@ export class AuthDTO {
 export class LogInDTO extends AuthDTO {}
 
 export class SignUpCustomerDTO extends AuthDTO {
+  @ApiProperty()
   @IsString()
   name: string;
 
+  @ApiProperty()
   @MinLength(8)
   password: string;
 }
