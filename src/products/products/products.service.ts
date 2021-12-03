@@ -39,4 +39,11 @@ export class ProductsService {
 
     return product;
   }
+
+  async getPriceByProductId(productId: number): Promise<number> {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+    });
+    return parseFloat(product.price.toString());
+  }
 }

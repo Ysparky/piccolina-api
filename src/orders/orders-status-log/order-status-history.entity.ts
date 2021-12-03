@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Order } from './orders.entity';
+import { Order } from '../orders/orders.entity';
 
 export enum OrderStatusEnum {
   NEW = 'NEW',

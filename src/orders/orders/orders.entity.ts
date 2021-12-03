@@ -11,8 +11,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { OrderDetail } from './order-detail.entity';
-import { OrderStatusLog } from './order-status-history.entity';
+import { OrderDetail } from '../orders-detail/order-detail.entity';
+import { OrderStatusLog } from '../orders-status-log/order-status-history.entity';
 
 export enum OrderStatus {
   NEW = 'NEW',
@@ -30,12 +30,12 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'decimal', precision: 9, scale: 3, name: 'sub_total' })
-  subTotal: number;
-
   // TODO: Handle tax
-  //   @Column({ type: 'decimal', precision: 9, scale: 3 })
-  //   tax: number;
+  // @Column({ type: 'decimal', precision: 9, scale: 3, name: 'sub_total' })
+  // subTotal: number;
+
+  // @Column({ type: 'decimal', precision: 9, scale: 3 })
+  // tax: number;
 
   @Column({ type: 'numeric', precision: 10, scale: 2, name: 'total_price' })
   totalPrice: number;

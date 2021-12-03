@@ -22,7 +22,6 @@ export class AuthService {
   ) {}
 
   async validateUser({ email, password }: LogInDTO): Promise<User> {
-    console.log(email, password);
     const user = await this.usersService.findByEmail(email);
     if (user) {
       const isValid = await bcrypt.compare(password, user.password);

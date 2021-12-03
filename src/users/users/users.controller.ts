@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
+import { TokenPayload } from 'src/auth/auth/auth.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { User } from './users.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -11,7 +11,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   me(@Req() req: Request) {
-    const user = req.user as User;
+    const user = req.user as TokenPayload;
     return this.usersService.findOne(user.id);
   }
 }
