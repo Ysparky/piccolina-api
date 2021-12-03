@@ -18,6 +18,13 @@ export class OrdersService {
     private readonly productService: ProductsService,
   ) {}
 
+  findByCustomer(customerId: number): Promise<Order[]> {
+    return this.ordersRepo.find({
+      where: { flag: true, customer: customerId },
+      relations: ['items', 'statusLog', 'items.product'],
+    });
+  }
+
   async create(
     customerId: number,
     { location, details }: CreateOrderDTO,

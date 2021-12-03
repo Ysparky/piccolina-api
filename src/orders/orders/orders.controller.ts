@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  HttpCode,
   HttpStatus,
   Post,
   Req,
@@ -16,6 +18,14 @@ import { OrdersService } from './orders.service';
 @Controller('orders')
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  @HttpCode(200)
+  orders(@Req() req: Request) {
+    const user = req.user as TokenPayload;
+    return this.ordersService.findByCustomer(user.subId);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

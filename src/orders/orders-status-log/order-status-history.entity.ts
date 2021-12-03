@@ -33,7 +33,6 @@ export class OrderStatusLog {
   @JoinColumn({ name: 'order_id' })
   order: Order;
 
-  @Exclude()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamptz',
