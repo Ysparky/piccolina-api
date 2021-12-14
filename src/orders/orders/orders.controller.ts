@@ -37,6 +37,8 @@ export class OrdersController {
     @Body() data: CreateOrderDTO,
   ) {
     const user = req.user as TokenPayload;
+    console.log(user);
+
     await this.ordersService.create(user.subId, data);
     return res.status(HttpStatus.CREATED).send();
   }
