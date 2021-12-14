@@ -11,18 +11,15 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { database, host, password, port, username } =
-          configService.database;
         return {
           type: 'postgres',
-          host,
-          port,
-          username,
-          password,
-          database,
+          url: configService.postgres_url,
           synchronize: false,
           autoLoadEntities: true,
           namingStrategy: new SnakeNamingStrategy(),
+          ssl: {
+            rejectUnauthorized: false,
+          },
         };
       },
     }),
