@@ -7,7 +7,7 @@ import { Order } from './orders/orders.entity';
 import { OrdersService } from './orders/orders.service';
 import { OrdersDetailService } from './orders-detail/orders-detail.service';
 import { OrdersStatusLogService } from './orders-status-log/orders-status-log.service';
-import { ProductsModule } from 'src/products/products.module';
+import { ProductsModule } from '../products/products.module';
 import { PaymentController } from './payment/payment.controller';
 import { PaymentService } from './payment/payment.service';
 import { Payment } from './payment/payment.entity';

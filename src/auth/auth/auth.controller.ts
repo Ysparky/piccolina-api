@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { User } from 'src/users/users/users.entity';
+import { User } from '../../users/users/users.entity';
 import { LogInResponse, SignUpCustomerDTO } from './auth.dto';
 import { AuthService } from './auth.service';
 

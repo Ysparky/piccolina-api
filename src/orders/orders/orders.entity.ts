@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { Customer } from 'src/users/customers/customers.entity';
-import { Location } from 'src/users/locations/locations.entity';
+import { Customer } from '../../users/customers/customers.entity';
+import { Location } from '../../users/locations/locations.entity';
 import {
   Column,
   CreateDateColumn,

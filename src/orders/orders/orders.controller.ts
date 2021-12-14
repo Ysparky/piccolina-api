@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { TokenPayload } from 'src/auth/auth/auth.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { TokenPayload } from '../../auth/auth/auth.dto';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CreateOrderDTO } from './orders.dto';
 import { OrdersService } from './orders.service';
 
