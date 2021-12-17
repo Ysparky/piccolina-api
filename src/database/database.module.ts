@@ -17,9 +17,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
           synchronize: false,
           autoLoadEntities: true,
           namingStrategy: new SnakeNamingStrategy(),
-          // ssl: {
-          //   rejectUnauthorized: false,
-          // },
+          ssl: {
+            rejectUnauthorized: false,
+          },
         };
       },
     }),
